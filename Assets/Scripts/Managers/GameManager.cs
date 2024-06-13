@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -11,6 +12,12 @@ public class GameManager : Singleton<GameManager>
     public static event GameEvent OnTowersGen;
     public static event GameEvent OnPlayerAct;
 
+    public Button nextTurn;
+
+    private void Start()
+    {
+        nextTurn.interactable = false;
+    }
     public void NextTurn()
     {
         StartCoroutine(TurnSequence());
@@ -18,6 +25,7 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator TurnSequence()
     {
+        nextTurn.interactable = false;
         OnStructure?.Invoke();
         yield return new WaitForSeconds(1f);
 
@@ -32,5 +40,6 @@ public class GameManager : Singleton<GameManager>
 
         OnPlayerAct?.Invoke();
         yield return new WaitForSeconds(1f);
+        nextTurn.interactable = true;
     }
 }

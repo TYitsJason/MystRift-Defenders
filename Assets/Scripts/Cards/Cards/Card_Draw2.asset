@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0641b4e8f79b16f4199d8cd3964dd748, type: 3}
+  m_Name: Card_Draw2
+  m_EditorClassIdentifier: 
+  cardName: Arcane Intellect
+  cost: 1
+  description: Draw 2 cards
+  actions:
+  - {fileID: 11400000, guid: 1d4c44ebc8886f744ba977ed8edbaaa5, type: 2}
+  targetTower: 0

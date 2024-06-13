@@ -13,7 +13,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     private Camera mainCamera;
     public LayerMask placementLayer;
-    private Card attachedCard;
+    private CardInstance attachedCard;
 
     private void Awake()
     {
@@ -45,61 +45,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             GridCell cell = hit.collider.GetComponentInParent<GridCell>();
             Debug.Log(cell);
-            PlaceObject(cell);
+            if (DeckManager.Instance.PlayCard(attachedCard, cell))
+                gameObject.SetActive(false);
+            transform.position = originalPos;
         }
-        else
-        {
-            transform.position = GetComponent<Draggable>().originalPos;
-        }
-    }
-
-    private bool PlaceObject(GridCell cell)
-    {
-        if (cell != null)
-        {
-            if (TryToPlaceTower(cell))
-            {
-                Debug.Log("Tower placed successfully at: " + cell.X + ", " + cell.Y);
-                return true;
-            }
-            else
-            {
-                Debug.Log("Failed to place tower at: " + cell.X + ", " + cell.Y);
-                return false;
-            }
-        }
-        return false;
-    }
-
-    private bool TryToPlaceTower(GridCell cell)
-    {
-        Debug.Log("Attempting to place tower");
-        attachedCard.targetCol = cell.X;
-        attachedCard.targetRow = cell.Y;
-        if (cell.CanPlaceTower && !cell.IsOccupiedByTower && !cell.IsOccupiedByEnemyStructure)
-        {
-            if (attachedCard is TowerCard TowerCard && !TowerCard.isPlaced)
-                return cell.TryPlaceTower(TowerCard);
-            return ActivatePower(cell, (PowerCard)attachedCard);
-        }
-        else if (cell.CanActivatePower)
-            return ActivatePower(cell, (PowerCard)attachedCard);
-        return false;
-    }
-
-    private bool ActivatePower(GridCell cell, PowerCard powerCard)
-    {
-        Debug.Log("Attempting to activate power");
-        if (cell.CanActivatePower)
-        {
-            foreach (ICardActions action in powerCard.actions)
-            {
-                action.ExecuteAction();
-            }
-            Debug.Log("Successful");
-            return true;
-        }
-        Debug.Log("Failed");
-        return false;
     }
 }

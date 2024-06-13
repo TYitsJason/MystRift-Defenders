@@ -9,18 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: test2
-  m_EditorClassIdentifier: Assembly-CSharp::TowerCard
-  cardName: test tower
+  m_Script: {fileID: 11500000, guid: 161fe100ccd955249bdbe8e42aa65d42, type: 3}
+  m_Name: Card_TowerBasic
+  m_EditorClassIdentifier: 
+  cardName: Basic Tower
   cost: 1
-  description: asdasd
-  sprite: {fileID: 0}
-  targetCol: 0
-  targetRow: 0
-  attackPower: 2
-  health: 1
-  attackType: 0
+  description: Spawns basic tower
+  attackPower: 1
+  health: 2
+  attackType: 1
   isPlaced: 0
-  powerCardVariant: {fileID: 11400000, guid: 0da651a8d3fc8044386708f56fde4249, type: 2}
+  powerCardVariant: {fileID: 11400000, guid: e181fe56982f26349b2bbc15ca6f7e02, type: 2}
   towerPrefab: {fileID: 4964582495352190447, guid: 27cd704a62d0edc4fb9a6e20834bb7fb, type: 3}

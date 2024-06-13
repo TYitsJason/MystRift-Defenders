@@ -27,14 +27,18 @@ public class CardDisplayManager : MonoBehaviour
     {
         DeckManager.OnHandChanged += UpdateHandDisplay;
     }
-
-    void UpdateHandDisplay(List<Card> hand)
+    private void OnDisable()
     {
-        for (int i = 0; i<DeckManager.Instance.maxSize; i++)
+        DeckManager.OnHandChanged -= UpdateHandDisplay;
+    }
+
+    void UpdateHandDisplay(List<CardInstance> hand)
+    {
+        for (int i = 0; i < DeckManager.Instance.maxSize; i++)
         {
             cardDisplays[i].StopDisplay();
         }
-        for (int i = 0; i<hand.Count; i++)
+        for (int i = 0; i < hand.Count; i++)
         {
             cardDisplays[i].card = hand[i];
             cardDisplays[i].DisplayCardInfo();

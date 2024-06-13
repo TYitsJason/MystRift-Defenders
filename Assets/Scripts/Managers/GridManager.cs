@@ -53,6 +53,7 @@ public class GridCell : MonoBehaviour
 
     // Occupying object
     public TowerCard tower;
+    public GameObject towerObject;
     public EnemyStructure structure;
 
     // Position of the cell in the grid
@@ -72,21 +73,19 @@ public class GridCell : MonoBehaviour
         CanPlaceTower = x < 5;
         IsOccupiedByTower = false;
         IsOccupiedByEnemyStructure = false;
-        CanActivatePower = true;
     }
     // Call this method to try placing a tower in this cell
-    public bool TryPlaceTower(TowerCard towerToPlace)
+    public void TryPlaceTower(CardInstance towerToPlace)
     {
-        if (CanPlaceTower && !IsOccupiedByTower && !IsOccupiedByEnemyStructure)
-        {
-            IsOccupiedByTower = true;
-            tower = towerToPlace;
-            GameObject towerObject = Instantiate(towerToPlace.towerPrefab);
-            towerToPlace.isPlaced = true;
-            return true; // Tower placement successful
-        }
-
-        return false; // Tower placement failed
+        IsOccupiedByTower = true;
+        tower = towerToPlace.cardData as TowerCard;
+        towerObject = Instantiate(tower.towerPrefab);
+        TowerObject controller = towerObject.GetComponent<TowerObject>();
+        controller.AttackType = tower.attackType;
+        controller.AttackPower = tower.attackPower;
+        controller.Health = tower.health;
+        controller.card = tower;
+        towerToPlace.isPlaced = true;
     }
 
     // Call this method to add an enemy structure to this cell
