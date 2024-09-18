@@ -29,19 +29,34 @@ public class CardDisplay : MonoBehaviour
         gameObject.SetActive(true);
         if (card.cardData != null)
         {
-            nameText.text = card.cardData.cardName;
-            descriptionText.text = card.cardData.description;
-            //cardSprite.sprite = card.sprite;
-
-            if (card.cardData is TowerCard towerCard && !card.isPlaced)
+            costText.text = card.cardData.cost.ToString();
+            if (card.cardData is TowerCard towerCard)
             {
-                attackText.gameObject.SetActive(true);
-                healthText.gameObject.SetActive(true);
-                attackText.text = towerCard.attackPower.ToString();
-                healthText.text = towerCard.health.ToString();
+                if (!card.isPlaced)
+                {
+                    nameText.text = card.cardData.cardName;
+                    descriptionText.text = card.cardData.description;
+                    //cardSprite.sprite = card.sprite;
+                    attackText.gameObject.SetActive(true);
+                    healthText.gameObject.SetActive(true);
+                    attackText.text = towerCard.attackPower.ToString();
+                    healthText.text = towerCard.health.ToString();
+                }
+                else
+                {
+                    nameText.text = towerCard.powerCardVariant.cardName;
+                    descriptionText.text = towerCard.powerCardVariant.description;
+                    //cardSprite.sprite = card.sprite;
+                    attackText.gameObject.SetActive(false);
+                    healthText.gameObject.SetActive(false);
+                }
+                
             }
             else
             {
+                nameText.text = card.cardData.cardName;
+                descriptionText.text = card.cardData.description;
+                //cardSprite.sprite = card.sprite;
                 attackText.gameObject.SetActive(false);
                 healthText.gameObject.SetActive(false);
             }
@@ -51,13 +66,5 @@ public class CardDisplay : MonoBehaviour
     public void StopDisplay()
     {
         gameObject.SetActive(false);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (RunManager.Instance.canChooseReward && card != null)
-        {
-            RunManager.Instance.OnCardSelected(card.cardData);
-        }
     }
 }

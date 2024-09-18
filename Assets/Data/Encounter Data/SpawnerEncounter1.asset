@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb00404ab145b459c898a2e082e56c, type: 3}
+  m_Name: SpawnerEncounter1
+  m_EditorClassIdentifier: 
+  encounterName: Spawner
+  rounds:
+  - roundNumber: 1
+    spawnInfos:
+    - enemyPrefab: {fileID: 6540543306437076543, guid: 52facf34d0ce78d46825334bf0469c94, type: 3}
+      count: 1
+      lanes: 000000000100000002000000
+  - roundNumber: 3
+    spawnInfos:
+    - enemyPrefab: {fileID: 6540543306437076543, guid: 52facf34d0ce78d46825334bf0469c94, type: 3}
+      count: 1
+      lanes: 000000000100000002000000
+  spawners:
+  - spawnerPrefab: {fileID: 6540543306437076543, guid: 1f4173fb7720bf8418841e7f50a5b834, type: 3}
+    initialSpawnTimer: 2
+    position: {x: 6, y: 1}

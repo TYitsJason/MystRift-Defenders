@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0641b4e8f79b16f4199d8cd3964dd748, type: 3}
+  m_Name: Power_Overload
+  m_EditorClassIdentifier: 
+  cardName: Overload
+  cost: 2
+  description: Target tower takes 1 damage, then attack twice
+  actions:
+  - {fileID: 11400000, guid: f0a0382cdb02c9a4e8383ef9152c0434, type: 2}
+  - {fileID: 11400000, guid: 63de484c7f3fae44dbacbc4ecfb01c16, type: 2}
+  - {fileID: 11400000, guid: 63de484c7f3fae44dbacbc4ecfb01c16, type: 2}
+  targetTower: 1

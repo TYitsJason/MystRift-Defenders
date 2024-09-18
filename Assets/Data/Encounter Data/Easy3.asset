@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a99e4bf5cb5890a41997bc14da8eec79, type: 3}
+  m_Name: Easy3
+  m_EditorClassIdentifier: 
+  encounterName: SwarmRush
+  rounds:
+  - roundNumber: 1
+    spawnInfos:
+    - enemyPrefab: {fileID: 6540543306437076543, guid: a90581024346e2441bbabb8abab2eb69, type: 3}
+      count: 3
+      lanes: 000000000100000002000000
+  - roundNumber: 2
+    spawnInfos:
+    - enemyPrefab: {fileID: 6540543306437076543, guid: a90581024346e2441bbabb8abab2eb69, type: 3}
+      count: 3
+      lanes: 000000000100000002000000
+  - roundNumber: 3
+    spawnInfos:
+    - enemyPrefab: {fileID: 6540543306437076543, guid: a90581024346e2441bbabb8abab2eb69, type: 3}
+      count: 3
+      lanes: 000000000100000002000000
+  - roundNumber: 4
+    spawnInfos:
+    - enemyPrefab: {fileID: 6540543306437076543, guid: 76051cbb192ad1c4da2d8980be98dbf2, type: 3}
+      count: 2
+      lanes: 000000000100000002000000

@@ -5,12 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Manual Tower Attack", menuName = "Card Effects/Manual Tower Attack")]
 public class ManualTowerAttack : CardEffect
 {
-    public int numOfAttacks;
     public override void Execute(GridCell cell)
     {
-        for (int i = 0; i < numOfAttacks; i++)
-        {
-            cell.towerObject.GetComponent<TowerObject>().Attack();
-        }
+        cell.towerObject.GetComponent<TowerObject>().manual = true;
+        cell.towerObject.GetComponent<TowerObject>().Attack();
+        cell.towerObject.GetComponent<TowerObject>().manual = false;
     }
 }

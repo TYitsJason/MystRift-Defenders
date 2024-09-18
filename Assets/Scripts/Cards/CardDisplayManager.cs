@@ -32,7 +32,7 @@ public class CardDisplayManager : MonoBehaviour
         DeckManager.OnHandChanged -= UpdateHandDisplay;
     }
 
-    void UpdateHandDisplay(List<CardInstance> hand)
+    public void UpdateHandDisplay(List<CardInstance> hand)
     {
         for (int i = 0; i < DeckManager.Instance.maxSize; i++)
         {

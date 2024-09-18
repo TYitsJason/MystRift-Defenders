@@ -10,8 +10,6 @@ public class PowerCard : Card
     public void Play(GridCell cell)
     {
         foreach (CardEffect effect in actions)
-        {
             effect.Execute(cell);
-        }
     }
 }

@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.EditorTools;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DeckManager : Singleton<DeckManager>
 {
@@ -21,6 +21,9 @@ public class DeckManager : Singleton<DeckManager>
     public int mana = 3;
     public int maxMana = 3;
 
+    public Text manaDisplay;
+    public Canvas GUI;
+
     protected virtual void OnEnable()
     {
         GameManager.OnPlayerAct += OnPlayerStart;
@@ -33,6 +36,7 @@ public class DeckManager : Singleton<DeckManager>
 
     public void InitializeDeck(List<Card> newDeck)
     {
+        Debug.Log("Deck manager initalizing deck");
         deck.Clear();
         foreach (Card card in newDeck)
         {
@@ -40,12 +44,15 @@ public class DeckManager : Singleton<DeckManager>
         }
         hand.Clear();
         discard.Clear();
+        mana = maxMana;
+        GUI.gameObject.SetActive(true);
     }
 
     private void OnPlayerStart()
     {
         ShuffleDeck();
         DrawCard(handSize);
+        manaDisplay.text = "Mana " + mana + "/" + maxMana;
     }
 
     void ShuffleDeck()
@@ -61,10 +68,16 @@ public class DeckManager : Singleton<DeckManager>
 
     public void DrawCard(int numToDraw)
     {
+        Debug.Log("Drawing " +  numToDraw + " cards");
         while (hand.Count < maxSize && numToDraw > 0)
         {
             if (deck.Count == 0)
             {
+                if (discard.Count == 0)
+                {
+                    OnHandChanged?.Invoke(hand);
+                    return;
+                }
                 foreach (var card in discard)
                 {
                     deck.Add(card);
@@ -74,6 +87,20 @@ public class DeckManager : Singleton<DeckManager>
             }
             hand.Add(deck[0]);
             deck.RemoveAt(0);
+            numToDraw--;
+        }
+        OnHandChanged?.Invoke(hand);
+    }
+
+    public void DiscardCard(int numToDiscard)
+    {
+        Debug.Log("Discarding " + numToDiscard + " cards");
+        while (hand.Count > 0 && numToDiscard > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, deck.Count);
+            discard.Add(hand[randomIndex]);
+            hand.RemoveAt(randomIndex);
+            numToDiscard--;
         }
         OnHandChanged?.Invoke(hand);
     }
@@ -81,6 +108,7 @@ public class DeckManager : Singleton<DeckManager>
     public void EndTurn()
     {
         // Discard all cards in hand
+        Debug.Log("Ending Turn");
         foreach (var card in hand)
         {
             discard.Add(card);
@@ -97,7 +125,7 @@ public class DeckManager : Singleton<DeckManager>
             Debug.Log("Card does not exist");
             return false;
         }
-        if (card.cardData.cost > mana)
+        if (card.cardData.cost > mana || (card.cardData is TowerCard tower && card.isPlaced && tower.powerCardVariant.cost > mana))
         {
             Debug.Log("Not enough mana to play");
             return false;
@@ -125,7 +153,7 @@ public class DeckManager : Singleton<DeckManager>
                 return false;
             }
             cell.TryPlaceTower(card);
-            HandleCardPlay(card);
+            HandleCardPlay(card, card.cardData.cost);
             return true;
         }
         else if (card.cardData is PowerCard powerCard)
@@ -139,16 +167,18 @@ public class DeckManager : Singleton<DeckManager>
     public bool PlayPowerCard(CardInstance cardInstance, GridCell cell)
     {
         PowerCard powerCard;
+        int manaCost;
         if (cardInstance.cardData is TowerCard towerCard)
             powerCard = cardInstance.PowerCardVariant;
-        else 
+        else
             powerCard = cardInstance.cardData as PowerCard;
+        manaCost = powerCard.cost;
         if (powerCard.targetTower)
         {
             if (cell.IsOccupiedByTower)
             {
                 powerCard.Play(cell);
-                HandleCardPlay(cardInstance);
+                HandleCardPlay(cardInstance, manaCost);
                 return true;
             }
             Debug.Log("No tower found while trying to use tower targeting power");
@@ -157,16 +187,23 @@ public class DeckManager : Singleton<DeckManager>
         else
         {
             powerCard.Play(cell);
-            HandleCardPlay(cardInstance);
+            HandleCardPlay(cardInstance, manaCost);
             return true;
         }
     }
 
-    public void HandleCardPlay(CardInstance card)
+    public void HandleCardPlay(CardInstance card, int manaCost)
     {
         mana -= card.cardData.cost;
+        manaDisplay.text = "Mana " + mana + "/" + maxMana;
         hand.Remove(card);
         discard.Add(card);
         OnHandChanged?.Invoke(hand);
+    }
+
+    public void GainMana(int manaToGain)
+    {
+        mana += manaToGain;
+        manaDisplay.text = "Mana " + mana + "/" + maxMana;
     }
 }

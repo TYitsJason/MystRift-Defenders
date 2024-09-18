@@ -10,15 +10,16 @@ public class GridManager : Singleton<GridManager>
     public GameObject gridCellPrefab2;
     public LayerMask GameGridLayer;
 
-    private GridCell[,] grid;
+    public GridCell[,] grid;
 
-    private void Start()
+    public void CreateGrid()
     {
-        CreateGrid();
-    }
+        if (grid != null)
+        {
+            ResetGrid();
+            return;
+        }
 
-    void CreateGrid()
-    {
         grid = new GridCell[width, height];
 
         GameObject gridObject = new GameObject("GameGrid");
@@ -42,14 +43,25 @@ public class GridManager : Singleton<GridManager>
             }
         }
     }
+
+    public void ResetGrid()
+    {
+        for (int z = 0; z < height; z++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                grid[x, z].Initialize(x, z);
+            }
+        }
+    }
 }
 public class GridCell : MonoBehaviour
 {
     // Properties
-    public bool CanPlaceTower { get; private set; }
-    public bool IsOccupiedByTower { get; private set; }
-    public bool IsOccupiedByEnemyStructure { get; private set; }
-    public bool CanActivatePower { get; private set; }
+    public bool CanPlaceTower { get;  set; }
+    public bool IsOccupiedByTower { get; set; }
+    public bool IsOccupiedByEnemyStructure { get;  set; }
+    public bool CanActivatePower { get;  set; }
 
     // Occupying object
     public TowerCard tower;
@@ -73,19 +85,27 @@ public class GridCell : MonoBehaviour
         CanPlaceTower = x < 5;
         IsOccupiedByTower = false;
         IsOccupiedByEnemyStructure = false;
+        DestroyPlacedTower();
     }
     // Call this method to try placing a tower in this cell
     public void TryPlaceTower(CardInstance towerToPlace)
     {
         IsOccupiedByTower = true;
         tower = towerToPlace.cardData as TowerCard;
-        towerObject = Instantiate(tower.towerPrefab);
+        towerObject = Instantiate(tower.towerPrefab, transform);
         TowerObject controller = towerObject.GetComponent<TowerObject>();
-        controller.AttackType = tower.attackType;
-        controller.AttackPower = tower.attackPower;
+        controller.Power = tower.attackPower;
         controller.Health = tower.health;
-        controller.card = tower;
+        controller.card = towerToPlace;
         towerToPlace.isPlaced = true;
+        controller.Position = this;
+    }
+
+    public void DestroyPlacedTower()
+    {
+        IsOccupiedByTower = false;
+        tower = null;
+        Destroy(towerObject);
     }
 
     // Call this method to add an enemy structure to this cell
